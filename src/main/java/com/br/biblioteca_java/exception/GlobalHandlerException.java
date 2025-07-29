@@ -2,6 +2,7 @@ package com.br.biblioteca_java.exception;
 
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +44,16 @@ public class GlobalHandlerException {
     public ResponseEntity businessRules (ValidacaoException ex){
         var error = new ValidacaoException(ex.getFieldName(), ex.getMessage());
         return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        Map<String, String> error = new HashMap<>();
+
+        String message = ex.getMostSpecificCause().getMessage();
+
+        error.put("erro", "Violação de integridade de dados: " + " Essa matrícula já existe para outro usuário");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
