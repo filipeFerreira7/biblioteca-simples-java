@@ -46,13 +46,19 @@ public class GlobalHandlerException {
         return ResponseEntity.badRequest().body(error);
     }
 
+    @ExceptionHandler(EmprestimoException.class)
+    public ResponseEntity emprestimo (EmprestimoException ex){
+        var error = new EmprestimoException(ex.getFieldName(), ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         Map<String, String> error = new HashMap<>();
 
         String message = ex.getMostSpecificCause().getMessage();
 
-        error.put("erro", "Violação de integridade de dados: " + " Essa matrícula já existe para outro usuário");
+        error.put("erro", "Violação de integridade de dados: " + message);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }

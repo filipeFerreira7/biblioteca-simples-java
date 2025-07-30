@@ -1,6 +1,8 @@
 package com.br.biblioteca_java.service;
 
 import com.br.biblioteca_java.dto.LivroDTORequest;
+import com.br.biblioteca_java.dto.LivroDTOResponse;
+import com.br.biblioteca_java.dto.LivroSemEmprestimoResponse;
 import com.br.biblioteca_java.model.Livro;
 import com.br.biblioteca_java.repository.LivroRepository;
 import jakarta.transaction.Transactional;
@@ -18,29 +20,23 @@ public class LivroService {
 
 
     @Transactional
-    public Livro post(LivroDTORequest dto) {
+    public LivroSemEmprestimoResponse post(LivroDTORequest dto) {
         Livro livro = new Livro();
         livro.setTitulo(dto.titulo());
         livro.setAutor(dto.autor());
-        livro.setDataEmprestimo(dto.dataEmprestimo());
-        livro.setDataDevolucao(calculaDataDevolucao(dto.dataEmprestimo()));
-
+        livro.setDisponivel(true);
         livroRepository.save(livro);
-        return livro;
+        return LivroSemEmprestimoResponse.valueOf(livro);
     }
 
     @Transactional
-    public Optional<Livro> put(Long id, Livro livro){
+    public Optional<LivroSemEmprestimoResponse> put(Long id, Livro livro){
         return livroRepository.findById(id).map( d -> {
             d.setTitulo(livro.getTitulo());
             d.setAutor(livro.getAutor());
-            d.setDataEmprestimo(livro.getDataEmprestimo());
-
-            return livroRepository.save(d);
+            return LivroSemEmprestimoResponse.valueOf(livroRepository.save(d));
         });
     }
 
-    public LocalDate calculaDataDevolucao(LocalDate data) {
-        return data.plusDays(7);
-    }
+
 }

@@ -12,9 +12,6 @@ public record LivroDTORequest(
         String titulo,
         @NotBlank(message = "O campo autor não pode estar em branco")
         @NotNull(message = "O campo autor é obrigatório")
-        String autor,
-        @NotNull
-        @FutureOrPresent(message = "A data de empréstimo não pode ser no passado")
-        LocalDate dataEmprestimo
+        String autor
 ) {
 }

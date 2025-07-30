@@ -27,4 +27,10 @@ public class Livro {
 
     @Column
     private LocalDate dataDevolucao;
+
+    @Column(nullable = false)
+    private boolean disponivel;
+
+    @ManyToOne
+    private Usuario usuario;
 }

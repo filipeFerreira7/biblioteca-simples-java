@@ -1,6 +1,8 @@
 package com.br.biblioteca_java.controller;
 
 import com.br.biblioteca_java.dto.LivroDTORequest;
+import com.br.biblioteca_java.dto.LivroDTOResponse;
+import com.br.biblioteca_java.dto.LivroSemEmprestimoResponse;
 import com.br.biblioteca_java.model.Livro;
 import com.br.biblioteca_java.repository.LivroRepository;
 import com.br.biblioteca_java.service.LivroService;
@@ -31,17 +33,16 @@ public class LivroController {
     }
 
     @PostMapping
-    public ResponseEntity<Livro> post(@Valid @RequestBody LivroDTORequest dto) {
+    public ResponseEntity<LivroSemEmprestimoResponse> post(@Valid @RequestBody LivroDTORequest dto) {
         var post = livroService.post(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Livro> put(@PathVariable Long id,@Valid @RequestBody LivroDTORequest dto) {
+    public ResponseEntity<LivroSemEmprestimoResponse> put(@PathVariable Long id,@Valid @RequestBody LivroDTORequest dto) {
     Livro livro = new Livro();
     livro.setTitulo(dto.titulo());
     livro.setAutor(dto.autor());
-    livro.setDataEmprestimo(dto.dataEmprestimo());
     return livroService.put(id, livro).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

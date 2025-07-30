@@ -4,21 +4,17 @@ import com.br.biblioteca_java.model.Livro;
 
 import java.time.LocalDate;
 
-public record LivroDTOResponse(
+public record LivroSemEmprestimoResponse(
         Long id,
         String titulo,
         String autor,
-        LocalDate dataEmprestimo,
-        LocalDate dataDevolucao,
         boolean disponivel
 ) {
-    public static LivroDTOResponse valueOf(Livro livro) {
-        return new LivroDTOResponse(
+    public static LivroSemEmprestimoResponse valueOf(Livro livro) {
+        return new LivroSemEmprestimoResponse(
                 livro.getId(),
                 livro.getTitulo(),
                 livro.getAutor(),
-                livro.getDataEmprestimo(),
-                livro.getDataDevolucao(),
                 livro.isDisponivel()
         );
     }
